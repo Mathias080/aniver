@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>❤️</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #fff;
+            overflow: hidden;
+            position: relative;
+            background-color: #000;
+        }
+
+        /* Contenedor para adaptar el video de Streamable como fondo */
+        .video-bg-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: -2;
+            overflow: hidden;
+            pointer-events: none; /* Para que los clics atraviesen el video y funcionen los botones */
+        }
+
+        .video-bg-container iframe {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 100vw;
+            height: 56.25vw; /* Proporción 16:9 */
+            min-height: 100vh;
+            min-width: 177.77vh; /* Proporción 16:9 */
+            transform: translate(-50%, -50%);
+            border: none;
+            /* Filtro opcional para oscurecer un poco el video y que resalte el texto */
+            filter: brightness(0.8); 
+        }
+
+        /* Capa oscura adicional para legibilidad */
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.35);
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        /* Corazones flotantes de fondo */
+        .hearts-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: 2;
+            pointer-events: none;
+        }
+
+        .heart-float {
+            position: absolute;
+            display: block;
+            list-style: none;
+            color: rgba(255, 107, 129, 0.7);
+            bottom: -150px;
+            animation: animate 15s linear infinite;
+            font-size: 24px;
+        }
+
+        .heart-float:nth-child(1) { left: 10%; animation-duration: 12s; }
+        .heart-float:nth-child(2) { left: 20%; animation-duration: 8s; font-size: 18px; }
+        .heart-float:nth-child(3) { left: 35%; animation-duration: 15s; }
+        .heart-float:nth-child(4) { left: 50%; animation-duration: 10s; font-size: 30px; }
+        .heart-float:nth-child(5) { left: 65%; animation-duration: 14s; }
+        .heart-float:nth-child(6) { left: 80%; animation-duration: 11s; }
+        .heart-float:nth-child(7) { left: 90%; animation-duration: 9s; font-size: 22px; }
+
+        @keyframes animate {
+            0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(-1000px) rotate(720deg); opacity: 0; }
+        }
+
+        /* Tarjeta central */
+        .card {
+            background: rgba(255, 255, 255, 0.12);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 40px;
+            border-radius: 25px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+            text-align: center;
+            max-width: 480px;
+            width: 90%;
+            position: relative;
+            z-index: 10;
+        }
+
+        .main-heart {
+            font-size: 60px;
+            color: #ff6b81;
+            animation: latido 1.2s infinite;
+            margin-bottom: 15px;
+            text-shadow: 0 0 20px rgba(255, 107, 129, 0.5);
+        }
+
+        @keyframes latido {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.15); }
+            100% { transform: scale(1); }
+        }
+
+        h1 {
+            color: #ff8fab;
+            font-size: 26px;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+
+        p {
+            font-size: 15px;
+            line-height: 1.6;
+            color: #f1f1f1;
+            margin-bottom: 25px;
+        }
+
+        .btn-love {
+            background: linear-gradient(135deg, #ff6b81 0%, #ff4757 100%);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            font-size: 16px;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(255, 71, 87, 0.4);
+            transition: all 0.3s ease;
+            font-weight: bold;
+        }
+
+        .btn-love:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(255, 71, 87, 0.6);
+        }
+
+        /* Estilos de la ventana flotante (Modal) */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(5px);
+            z-index: 100;
+            justify-content: center;
+            align-items: center;
+            animation: fadeIn 0.3s ease;
+            padding: 20px;
+        }
+
+        .modal-content {
+            background: #222538;
+            border: 1px solid rgba(255, 107, 129, 0.4);
+            padding: 25px;
+            border-radius: 20px;
+            text-align: center;
+            max-width: 450px;
+            width: 95%;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.6);
+            position: relative;
+            animation: scaleUp 0.3s ease;
+        }
+
+        .modal-content img {
+            width: 100%;
+            max-height: 500px;
+            object-fit: contain;
+            border-radius: 12px;
+            margin-bottom: 15px;
+            background: #000;
+            border: 2px solid #ff6b81;
+        }
+
+        .modal-content p {
+            color: #ffb3c1;
+            font-size: 15px;
+            margin-bottom: 25px;
+        }
+
+        .close-btn {
+            background: #ff4757;
+            color: white;
+            border: none;
+            padding: 8px 20px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background 0.2s;
+        }
+
+        .close-btn:hover {
+            background: #ff6b81;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes scaleUp {
+            from { transform: scale(0.8); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Video de fondo integrado mediante el reproductor de Streamable -->
+    <div class="video-bg-container">
+        <iframe src="https://streamable.com/e/7c8xs8?autoplay=1&muted=1&loop=1&controls=0&nocontrols=1" 
+                allow="autoplay; fullscreen" 
+                allowfullscreen>
+        </iframe>
+    </div>
+
+    <!-- Capa oscura -->
+    <div class="overlay"></div>
+
+    <!-- Fondo de corazones flotantes -->
+    <div class="hearts-bg">
+        <div class="heart-float">❤️</div>
+        <div class="heart-float">💖</div>
+        <div class="heart-float">❤️</div>
+        <div class="heart-float">💕</div>
+        <div class="heart-float">💗</div>
+        <div class="heart-float">❤️</div>
+        <div class="heart-float">💖</div>
+    </div>
+
+    <!-- Contenido principal -->
+    <div class="card">
+        <div class="main-heart">❤️</div>
+        <h1>¡Feliz 4 años 5 meses amor!</h1>
+        <p>
+            Otro mes sumando momentos a tu lado. Gracias por siempre estar a mi lado todos los dias.
+        </p>
+
+        <button class="btn-love" onclick="abrirVentana()">Presiona</button>
+    </div>
+
+    <!-- Ventana flotante (Modal) para la imagen del botón -->
+    <div id="ventanaModal" class="modal-overlay">
+        <div class="modal-content">
+            <img src="2.jpg" alt="Nuestro recuerdo">
+            <p>😏🔥</p>
+            <button class="close-btn" onclick="cerrarVentana()">Cerrar</button>
+        </div>
+    </div>
+
+    <script>
+        function abrirVentana() {
+            document.getElementById("ventanaModal").style.display = "flex";
+        }
+
+        function cerrarVentana() {
+            document.getElementById("ventanaModal").style.display = "none";
+        }
+    </script>
+
+</body>
+</html>
